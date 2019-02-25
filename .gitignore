@@ -1,0 +1,4 @@
+*packer
+*.tfstate
+*.tfstate.*
+**/terraform/*
