@@ -1,0 +1,25 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "ami_name": "${ami-name}-{{isotime \"Jan-02-06\"}}",
+    "instance_type": "${instance_type}",
+    "region": "${region}",
+    "source_ami": "${source_ami}",
+    "security_group_ids": ["${security_groups}"],
+    "ssh_username": "${ssh_username}",
+    "iam_instance_profile": "${instance_profile}",
+    "profile": "${profile}",
+    "vpc_id": "${vpc_id}",
+    "subnet_id": "${subnet_id}",
+    "ami_users": ["${accounts}"],
+    "tags": {
+      "Name": "${ami-name}-{{isotime \"Jan-02-06\"}}",
+      "Base_AMI_Name": "{{ .SourceAMIName }}",
+      "OS": "${os}"
+    }
+    }],
+    "provisioners": [{
+      "type": "shell",
+      "script": "${script}"
+      }]
+}

@@ -2,3 +2,7 @@
 *.tfstate
 *.tfstate.*
 **/terraform/*
+.terraform/
+**.log
+provider.tf
+ami.json

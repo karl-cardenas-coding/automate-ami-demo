@@ -1,0 +1,48 @@
+stages:
+  - terraform
+  - packer
+before_script:
+  - mkdir ~/.aws/
+  - echo -e "[default]" > ~/.aws/credentials
+  - echo -e "aws_access_key_id=$AWS_ACCESS_KEY">> ~/.aws/credentials
+  - echo -e "aws_secret_access_key=$AWS_SECRET_KEY">> ~/.aws/credentials
+  - echo -e "[default]" > ~/.aws/config
+  - echo -e "region = us-east-1" >> ~/.aws/config
+  - echo -e "output = json" >> ~/.aws/config
+  - echo -e "[profile home]" >> ~/.aws/config
+  - echo -e "role_arn=arn:aws:iam::$ACCOUNT_ID:role/$AWS_ROLE" >> ~/.aws/config
+  - echo -e "source_profile = default" >> ~/.aws/config
+  - echo -e "region = us-east-1" >> ~/.aws/config
+  - echo -e "output = json" >> ~/.aws/config
+  - cat ~/.aws/config
+  - export TF_IN_AUTOMATION=true
+
+build_json:
+  stage: terraform
+  tags: [gitlab-org]
+  image: registry.gitlab.com/cardenas88karl/automate-ami-demo:latest
+  only:
+    refs:
+      - master
+  script:
+    - chmod 755 ./aws-cli.sh
+    - terraform init && terraform apply -auto-approve
+    - packer validate ami.json
+  artifacts:
+    paths:
+      - ami.json
+  allow_failure: false
+
+execute_packer:
+  stage: packer
+  tags: [gitlab-org]
+  image: registry.gitlab.com/cardenas88karl/automate-ami-demo:latest
+  only:
+    refs:
+      - master
+  script:
+    - chmod 755 ./amazon.sh
+    - packer build ami.json
+  dependencies:
+    - build_json
+  allow_failure: false
