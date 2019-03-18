@@ -3,7 +3,6 @@
 ##########################################
 module "latest-ami" {
   source = "./modules/ami-latest"
-  os     = "${var.os}"
 }
 
 ##########################################
@@ -44,6 +43,7 @@ data "template_file" "ami-file" {
     ami-name         = "${var.ami-name}"
     vpc_id           = "${var.vpc-id}"
     subnet_id        = "${var.subnet-id}"
+    # Remove substring if only 1 security group is needed
     security_groups  = "${substr(local.security-groups,1,length(local.security-groups)-2)}"
     accounts         = "${substr(data.local_file.getorganizationAccts.content,1,length(data.local_file.getorganizationAccts.content)-2)}"
     # If you only have one account use -3

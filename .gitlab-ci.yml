@@ -14,7 +14,6 @@ before_script:
   - echo -e "source_profile = default" >> ~/.aws/config
   - echo -e "region = us-east-1" >> ~/.aws/config
   - echo -e "output = json" >> ~/.aws/config
-  - cat ~/.aws/config
   - export TF_IN_AUTOMATION=true
 
 build_json:
