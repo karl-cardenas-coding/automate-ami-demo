@@ -1,5 +1,6 @@
 stages:
-  - terraform
+  - terraform-validate
+  - terraform-build
   - packer
 before_script:
   - mkdir ~/.aws/
@@ -15,9 +16,27 @@ before_script:
   - echo -e "region = us-east-1" >> ~/.aws/config
   - echo -e "output = json" >> ~/.aws/config
   - export TF_IN_AUTOMATION=true
+  - export TF_VAR_role_arn="arn:aws:iam::${ACCOUNT_ID}:role/$AWS_ROLE"
+
+
+validate_json:
+  stage: terraform-build
+  tags: [gitlab-org]
+  image: registry.gitlab.com/cardenas88karl/automate-ami-demo:latest
+  except:
+    refs:
+      - master
+  script:
+    - chmod 755 ./aws-cli.sh
+    - terraform init && terraform apply -auto-approve
+    - packer validate ami.json
+  artifacts:
+    paths:
+      - ami.json
+  allow_failure: false
 
 build_json:
-  stage: terraform
+  stage: terraform-build
   tags: [gitlab-org]
   image: registry.gitlab.com/cardenas88karl/automate-ami-demo:latest
   only:

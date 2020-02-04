@@ -1,6 +1,6 @@
 data "aws_ami" "ami-attrs" {
   most_recent = true
-  owners      = ["amazon"]
+  owners      = var.owners
 
   filter {
     name   = "architecture"
@@ -22,5 +22,5 @@ data "aws_ami" "ami-attrs" {
     values = ["available"]
   }
 
-  name_regex = "^amzn2-ami-hvm-2.0*"
+  name_regex = var.regex
 }

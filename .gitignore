@@ -4,4 +4,6 @@
 **/terraform/*
 .terraform/
 **.log
+*.tfvars
 ami.json
+**.tfvars

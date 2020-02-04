@@ -5,3 +5,6 @@ ami-name         = "automated-ami"
 region           = "us-east-1"
 instance-profile = "EC2-role"
 profile          = "home"
+ami-owners-list  = ["amazon"]
+ami-regex        = "^amzn2-ami-hvm-2.0*"
+role-arn         = "arn:aws:iam::140040602879:role/automation-role"

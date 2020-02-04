@@ -8,5 +8,4 @@ This is designed for an environment with many AWS accounts
 
 ## Dockerfile
 FROM hashicorp/terraform:latest
-* Packer v1.3.5
-* apk update  3/11/2019
+* Packer v1.5.1
